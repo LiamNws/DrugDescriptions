@@ -14,13 +14,12 @@ except Exception as e:
     print("An error has occurred while reading the file")
     exit(1)
 
-startstop = True
 
-while startstop:
+while True:
 
     user_input = input("Enter Drug Name (e.g metformin 500): ")
 
-    matching = df[df["Drug Name"].str.contains(user_input, case=False, na=False)]
+    matching = df[(df["Drug Name"].str.contains(user_input, case=False, na=False)) & (df["Active Status"] != "FALSE")]
 
     if not matching.empty:
         for i, row in matching.iterrows():
@@ -57,11 +56,9 @@ while startstop:
                 # print("Copied to clipboard.")
                 pyperclip.copy(sentence2)
 
-
-
     else:
-        print(f"{user_input} was not found.")
+        print(f"No active drug was found for {user_input}")
 
     cont_loop = input("Ya thirsty for more? (Y/N): ")
     if cont_loop == "N" or cont_loop == "n":
-        startstop = False
+        break
